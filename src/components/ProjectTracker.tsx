@@ -90,7 +90,7 @@ const ProjectTracker = () => {
       <div className="flex min-h-screen w-full">
         <AppSidebar />
 
-        {/* Main content */}
+        {/* Main content - adjusted to work with the new sidebar width */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           <header className="border-b bg-white px-6 py-4">

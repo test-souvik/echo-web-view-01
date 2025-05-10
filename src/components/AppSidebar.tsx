@@ -91,9 +91,9 @@ export const AppSidebar = () => {
   
   return (
     <div className="flex h-full">
-      {/* Main thin sidebar */}
+      {/* Main thin sidebar - adjusted width */}
       <Sidebar 
-        className="border-r bg-white"
+        className="border-r bg-white w-16" // Increased from default width
         variant="sidebar"
         collapsible="icon"
       >
