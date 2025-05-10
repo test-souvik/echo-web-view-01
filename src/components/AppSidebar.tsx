@@ -1,32 +1,26 @@
 
 import { useState } from "react";
 import {
-  LayoutDashboard,
-  ListTodo,
-  User,
-  Settings,
+  Bell,
   Calendar,
-  Menu,
-  Star,
-  PlusCircle,
-  ChevronDown,
-  Tag,
-  Folder,
+  Building,
+  User,
+  MessageCircle,
+  CheckSquare,
   FileText,
-  Component,
-  Milestone,
-  CircleCheck,
-  CircleHelp,
+  Sun,
+  Cloud,
+  HelpCircle,
+  Settings,
+  Book,
+  Info,
+  Search
 } from "lucide-react";
 import { 
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader, 
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -34,7 +28,7 @@ import {
   SidebarTrigger,
   useSidebar
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 interface SidebarNavItem {
@@ -42,7 +36,7 @@ interface SidebarNavItem {
   label: string;
   href?: string;
   active?: boolean;
-  tooltip?: string;
+  hasNotification?: boolean;
 }
 
 export const AppSidebar = () => {
@@ -50,13 +44,24 @@ export const AppSidebar = () => {
   const [activeItem, setActiveItem] = useState("Issues");
 
   const mainNavItems: SidebarNavItem[] = [
-    { icon: CircleCheck, label: "My issues", href: "#my-issues" },
-    { icon: CircleHelp, label: "All issues", href: "#all-issues", active: true },
+    { icon: Bell, label: "Notifications", href: "#notifications", hasNotification: true },
+    { icon: Calendar, label: "Calendar", href: "#calendar" },
+    { icon: Building, label: "Projects", href: "#projects" },
   ];
 
-  const projectNavItems: SidebarNavItem[] = [
-    { icon: Folder, label: "All projects", href: "#all-projects" },
-    { icon: Tag, label: "Labels", href: "#labels" },
+  const middleNavItems: SidebarNavItem[] = [
+    { icon: User, label: "Profile", href: "#profile" },
+    { icon: MessageCircle, label: "Messages", href: "#messages" },
+    { icon: CheckSquare, label: "Tasks", href: "#tasks", active: true },
+    { icon: FileText, label: "Documents", href: "#documents" },
+    { icon: Sun, label: "Theme", href: "#theme" },
+    { icon: Book, label: "Knowledge Base", href: "#knowledge" },
+    { icon: Cloud, label: "Cloud Storage", href: "#storage" },
+  ];
+
+  const bottomNavItems: SidebarNavItem[] = [
+    { icon: Settings, label: "Settings", href: "#settings" },
+    { icon: HelpCircle, label: "Help", href: "#help" },
   ];
 
   const handleNavClick = (label: string) => {
@@ -67,154 +72,119 @@ export const AppSidebar = () => {
     <Sidebar 
       className="border-r bg-white"
       variant="sidebar"
-      collapsible={state === "expanded" ? "icon" : "offcanvas"}
+      collapsible="icon"
     >
-      <SidebarHeader>
-        <div className="flex items-center p-2">
-          <div className="h-9 w-9 rounded bg-orange-500 flex items-center justify-center text-white font-bold">
+      <SidebarHeader className="p-0">
+        <div className="flex items-center justify-center py-4">
+          <div className="h-10 w-10 rounded-md bg-orange-500 flex items-center justify-center text-white font-bold">
             T
           </div>
-          {state === "expanded" && (
-            <h2 className="text-lg font-semibold ml-2">Tracker</h2>
-          )}
-          <SidebarTrigger className="ml-auto" />
         </div>
-        
-        <div className="px-2 pb-2">
-          <Button 
-            className={cn(
-              "w-full justify-start bg-huly-blue hover:bg-blue-600 transition-all",
-              state === "collapsed" && "p-2 justify-center"
-            )} 
-            size={state === "collapsed" ? "icon" : "default"}
-          >
-            <PlusCircle className="h-4 w-4 mr-2" />
-            {state === "expanded" && <span>New issue</span>}
-          </Button>
+        <div className="px-4 py-2">
+          <div className="flex flex-col items-center">
+            <div className="h-0.5 w-5 bg-gray-400 mb-1.5"></div>
+            <div className="h-0.5 w-5 bg-gray-400"></div>
+          </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarMenu>
-            {mainNavItems.map((item) => (
-              <SidebarMenuItem key={item.label}>
-                <SidebarMenuButton 
-                  data-active={activeItem === item.label || item.active}
-                  onClick={() => handleNavClick(item.label)}
-                  tooltip={state === "collapsed" ? item.label : undefined}
-                >
-                  <item.icon className="h-4 w-4 mr-2" />
-                  {state === "expanded" && <span>{item.label}</span>}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-
-        <SidebarSeparator />
-
-        <SidebarGroup>
-          <SidebarMenu>
-            {projectNavItems.map((item) => (
-              <SidebarMenuItem key={item.label}>
-                <SidebarMenuButton 
-                  data-active={activeItem === item.label}
-                  onClick={() => handleNavClick(item.label)}
-                  tooltip={state === "collapsed" ? item.label : undefined}
-                >
-                  <item.icon className="h-4 w-4 mr-2" />
-                  {state === "expanded" && <span>{item.label}</span>}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-
-        <SidebarSeparator />
-
-        <SidebarGroup>
-          {state === "expanded" && (
-            <div className="flex items-center justify-between text-xs text-gray-500 font-medium px-3 py-2">
-              <span>YOUR PROJECTS</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
-          )}
-          <SidebarGroupContent className="px-2">
-            <ProjectItem 
-              emoji="🎮" 
-              title="GAME DESIGN (EXAMPLE)" 
-              isExpanded={state === "expanded"} 
+      <SidebarContent className="px-0 py-2">
+        {/* Top section */}
+        <SidebarMenu>
+          {mainNavItems.map((item) => (
+            <NavItem 
+              key={item.label}
+              item={item}
+              onClick={() => handleNavClick(item.label)}
+              isActive={activeItem === item.label || item.active}
             />
-            <ProjectItem 
-              emoji="👋" 
-              title="WELCOME TO HULY!" 
-              isExpanded={state === "expanded"} 
+          ))}
+        </SidebarMenu>
+        
+        <div className="my-2 border-t border-gray-200 mx-3"></div>
+        
+        {/* Middle section */}
+        <SidebarMenu>
+          {middleNavItems.map((item) => (
+            <NavItem 
+              key={item.label}
+              item={item}
+              onClick={() => handleNavClick(item.label)}
+              isActive={activeItem === item.label || item.active}
             />
-          </SidebarGroupContent>
-        </SidebarGroup>
+          ))}
+        </SidebarMenu>
+
+        <div className="my-2 border-t border-gray-200 mx-3"></div>
+
+        {/* Bottom section */}
+        <SidebarMenu className="mt-auto">
+          {bottomNavItems.map((item) => (
+            <NavItem 
+              key={item.label}
+              item={item}
+              onClick={() => handleNavClick(item.label)}
+              isActive={activeItem === item.label || item.active}
+            />
+          ))}
+        </SidebarMenu>
       </SidebarContent>
 
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip={state === "collapsed" ? "Help & Support" : undefined}>
-              <CircleHelp className="h-4 w-4 mr-2" />
-              {state === "expanded" && <span>Help & Support</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarFooter className="p-0 mt-auto">
+        <div className="flex justify-center items-center p-3">
+          <div className="h-10 w-10 rounded-md bg-blue-500 flex items-center justify-center text-white font-bold relative">
+            TP
+            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+          </div>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
 };
 
-const ProjectItem = ({ emoji, title, isExpanded = true }: { emoji: string; title: string; isExpanded?: boolean }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const NavItem = ({ 
+  item, 
+  onClick, 
+  isActive 
+}: { 
+  item: SidebarNavItem; 
+  onClick: () => void;
+  isActive: boolean;
+}) => {
+  const Icon = item.icon;
   
-  if (!isExpanded) {
-    return (
-      <div className="flex items-center justify-center my-2 p-1 rounded hover:bg-gray-100 cursor-pointer">
-        <span className="text-lg">{emoji}</span>
-      </div>
-    );
-  }
-
   return (
-    <div className="mb-3">
-      <div 
-        className="flex items-center py-1 px-2 rounded hover:bg-gray-100 cursor-pointer" 
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span className="h-4 w-4 rounded bg-yellow-200 mr-2 flex items-center justify-center">
-          {emoji}
-        </span>
-        <span className="text-sm truncate">{title}</span>
-      </div>
-      
-      {isOpen && (
-        <div className="ml-6 mt-1">
-          <ProjectSubItem icon={FileText} text="Issues" />
-          <ProjectSubItem icon={Component} text="Components" />
-          <ProjectSubItem icon={Milestone} text="Milestones" />
-          <ProjectSubItem icon={FileText} text="Templates" />
-        </div>
-      )}
-    </div>
+    <SidebarMenuItem>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SidebarMenuButton 
+              onClick={onClick}
+              data-active={isActive}
+              className={cn(
+                "flex justify-center w-full py-2.5",
+                isActive && "bg-gray-100"
+              )}
+            >
+              <div className="relative">
+                <Icon className={cn(
+                  "h-5 w-5 text-gray-500",
+                  isActive && "text-gray-700"
+                )} />
+                
+                {item.hasNotification && (
+                  <span className="absolute -top-0.5 -right-0.5 h-2 w-2 bg-red-500 rounded-full"></span>
+                )}
+              </div>
+            </SidebarMenuButton>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            {item.label}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </SidebarMenuItem>
   );
 };
-
-const ProjectSubItem = ({ icon: Icon, text }: { icon: React.ElementType; text: string }) => {
-  return (
-    <div className="flex items-center py-1 px-2 rounded hover:bg-gray-100 text-gray-700 cursor-pointer">
-      <Icon className="h-4 w-4 mr-2" />
-      <span className="text-sm">{text}</span>
-    </div>
-  );
-};
-
-const SidebarSeparator = () => (
-  <div className="h-px bg-gray-200 my-2 mx-2" />
-);
 
 export default AppSidebar;

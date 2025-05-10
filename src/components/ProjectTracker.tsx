@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import IssueCard from "./IssueCard";
 import AppSidebar from "./AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import {
   Search,
   Filter,
@@ -86,7 +86,7 @@ const ProjectTracker = () => {
   const todoCount = issues.filter(issue => issue.status === "todo").length;
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
 
@@ -96,9 +96,6 @@ const ProjectTracker = () => {
           <header className="border-b bg-white px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <SidebarTrigger className="md:hidden mr-2">
-                  <Menu className="h-5 w-5" />
-                </SidebarTrigger>
                 <h1 className="text-xl font-semibold">Tracker</h1>
               </div>
               <div className="flex items-center gap-2">
