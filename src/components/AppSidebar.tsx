@@ -66,7 +66,7 @@ export const AppSidebar = () => {
   return (
     <Sidebar 
       className="border-r bg-white"
-      variant={state === "expanded" ? "sidebar" : "icon"}
+      variant="sidebar"
       collapsible={state === "expanded" ? "icon" : "offcanvas"}
     >
       <SidebarHeader>
