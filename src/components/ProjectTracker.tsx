@@ -118,7 +118,7 @@ const ProjectTracker = () => {
           {/* Toolbar */}
           <div className="bg-white border-b px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
             <div className="flex flex-wrap gap-2">
-              <Button className="bg-huly-blue hover:bg-blue-600 flex items-center gap-2" size="sm">
+              <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2" size="sm">
                 <Plus className="h-4 w-4" /> 
                 New issue
               </Button>
